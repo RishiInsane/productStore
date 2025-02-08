@@ -1,12 +1,14 @@
 import express from "express";
 import dotenv from "dotenv";
-import path from "path";
+// import path from "path";
+// import cors from "cors";
 
 import { connectDB } from "./config/db.js";
 
 //productRoutes is a middleware that is defined in 
 // routes/product.route.js in the form of a function named router.
 import productRoutes from "./routes/product.route.js";
+import cartRoutes from "./routes/cart.route.js";
 
 //loads environment variables from a .env file into process.env 
 // that helps us to access the environment variables and their values 
@@ -26,6 +28,7 @@ dotenv.config();
 //with using this the frontend can send requests to the backend and the backend can send responses to the frontend 
 // using the app.get, app.post, app.put, app.delete which are the HTTP methods
 const app = express();
+
 const PORT = process.env.PORT || 5001;
 
 //__dirname is a global object that provides the directory name of the current module 
@@ -34,20 +37,22 @@ const PORT = process.env.PORT || 5001;
 // via the express.static middleware which is useful for the application in the form of the 
 // frontend/dist/index.html as it helps the application to serve the static files and the 
 // index.html file to the client side
-const __dirname = path.resolve();
+//const __dirname = path.resolve();
 
 app.use(express.json()); // allows us to accept JSON data in the req.body
+//app.use(cors());
 
 //app.use is a method that is used to set up middlewares in the express application the middlewares
 //the /api/products , productRoutes is a middleware that is defined in routes/product.route.js in the form of a function named router.
 app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 
-if (process.env.NODE_ENV === "production") {
-	app.use(express.static(path.join(__dirname, "/frontend/dist")));
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-	});
-}
+// if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "development") {
+// 	app.use(express.static(path.join(__dirname, "/frontend/dist")));
+// 	app.get("*", (req, res) => {
+// 		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+// 	});
+// }
 
 app.listen(PORT, () => {
 	connectDB();

@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import {
 	Box,
 	Button,
@@ -14,6 +14,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
+	Spacer,
 	Text,
 	useColorModeValue,
 	useDisclosure,
@@ -22,6 +23,8 @@ import {
 } from "@chakra-ui/react";
 import { useProductStore } from "../store/product";
 import { useState } from "react";
+import { useCartStore } from "../store/cart";
+import { FiShoppingCart } from "react-icons/fi";
 
 const ProductCard = ({ product }) => {
 	const [updatedProduct, setUpdatedProduct] = useState(product);
@@ -30,6 +33,7 @@ const ProductCard = ({ product }) => {
 	const bg = useColorModeValue("white", "gray.800");
 
 	const { deleteProduct, updateProduct } = useProductStore();
+	const { addToCart } = useCartStore();
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -76,6 +80,18 @@ const ProductCard = ({ product }) => {
 		}
 	};
 
+	const handleAddToCart = async (product) => {
+		console.log("Adding to cart:", product);
+		const response = await addToCart(product);
+		toast({
+			title: response.success ? "Added to Cart" : "Error",
+			description: response.message,
+			status: response.success ? "success" : "error",
+			duration: 3000,
+			isClosable: true,
+		});
+	};
+
 	return (
 		<Box
 			shadow='lg'
@@ -103,6 +119,10 @@ const ProductCard = ({ product }) => {
 						onClick={() => handleDeleteProduct(product._id)}
 						colorScheme='red'
 					/>
+					<Spacer />
+					<Button onClick={() => handleAddToCart(product)} colorScheme="gray" aria-label="Add to Cart">
+						<FiShoppingCart fontSize={20} />
+					</Button>
 				</HStack>
 			</Box>
 

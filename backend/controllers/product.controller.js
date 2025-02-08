@@ -15,7 +15,6 @@ export const getProducts = async (req, res) => {
 		res.status(500).json({ success: false, message: "Server Error" });
 	}
 };
-
 export const createProduct = async (req, res) => {
 	const product = req.body; // user will send this data
 
@@ -34,7 +33,6 @@ export const createProduct = async (req, res) => {
 		res.status(500).json({ success: false, message: "Server Error" });
 	}
 };
-
 export const updateProduct = async (req, res) => {
 	const { id } = req.params;
 
@@ -56,7 +54,6 @@ export const updateProduct = async (req, res) => {
 		res.status(500).json({ success: false, message: "Server Error" });
 	}
 };
-
 export const deleteProduct = async (req, res) => {
 	const { id } = req.params;
 

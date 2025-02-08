@@ -10,6 +10,7 @@ const HomePage = () => {
 	// if we dont destructure the fetchProducts function and the products array then 
 	// we will not be able to access the fetchProducts function and the products array
 	const { fetchProducts, products } = useProductStore();
+	//const { fetchCart, items } = useCartStore();
 
 	//the useEffect hook is used to call the fetchProducts function which is required for fetching the products from the backend and storing the value in the products array
 	//[fetchProducts] is used to specify that the fetchProducts function is the dependency of the useEffect hook 
